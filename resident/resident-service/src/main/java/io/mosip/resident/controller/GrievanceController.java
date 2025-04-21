@@ -4,6 +4,7 @@ import static io.mosip.resident.constant.ResidentConstants.API_RESPONSE_TIME_DES
 import static io.mosip.resident.constant.ResidentConstants.API_RESPONSE_TIME_ID;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class GrievanceController {
     @PostMapping("/grievance/ticket")
 	public ResponseWrapper<Object> grievanceTicket(
 			@Validated @RequestBody MainRequestDTO<GrievanceRequestDTO> grievanceRequestDTOMainRequestDTO)
-			throws ResidentServiceCheckedException, ApisResourceAccessException, IOException {
+			throws ResidentServiceCheckedException, ApisResourceAccessException, IOException, NoSuchAlgorithmException {
 		logger.debug("GrievanceController::grievanceTicket()::entry");
 		ResponseWrapper<Object> response = null;
 		try {

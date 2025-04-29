@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 
 import io.mosip.resident.util.AvailableClaimUtility;
 import io.mosip.resident.util.AvailableClaimValueUtility;
+import io.mosip.resident.util.Utility;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,9 +22,11 @@ import io.mosip.resident.dto.MainRequestDTO;
 import io.mosip.resident.exception.ApisResourceAccessException;
 import io.mosip.resident.repository.ResidentGrievanceRepository;
 
+import java.security.NoSuchAlgorithmException;
+
 /**
  * This class is used to create service class test  for grievance API.
- * @Author Kamesh Shekhar Prasad
+ * @author Kamesh Shekhar Prasad
  */
 @RunWith(MockitoJUnitRunner.class)
 @RefreshScope
@@ -47,6 +50,9 @@ public class GrievanceServiceImplTest {
 
     @Mock
     private AvailableClaimValueUtility availableClaimValueUtility;
+
+    @Mock
+    private Utility utility;
     
     private MainRequestDTO<GrievanceRequestDTO> grievanceRequestDTOMainRequestDTO;
 
@@ -62,13 +68,13 @@ public class GrievanceServiceImplTest {
     }
 
     @Test
-    public void testGetGrievanceTicket() throws ApisResourceAccessException {
+    public void testGetGrievanceTicket() throws ApisResourceAccessException, io.mosip.resident.exception.NoSuchAlgorithmException {
         ResponseWrapper<Object> actualResult = grievanceService.getGrievanceTicket(grievanceRequestDTOMainRequestDTO);
         assertNotNull(actualResult);
     }
 
     @Test(expected = ApisResourceAccessException.class)
-    public void testGetGrievanceTicketFailed() throws ApisResourceAccessException {
+    public void testGetGrievanceTicketFailed() throws ApisResourceAccessException, io.mosip.resident.exception.NoSuchAlgorithmException {
         Mockito.when(availableClaimValueUtility.getAvailableClaimValue(Mockito.anyString())).thenThrow(new ApisResourceAccessException());
         ResponseWrapper<Object> actualResult = grievanceService.getGrievanceTicket(grievanceRequestDTOMainRequestDTO);
         assertNotNull(actualResult);

@@ -5,6 +5,7 @@ import io.mosip.kernel.core.exception.ServiceError;
 import io.mosip.kernel.core.http.ResponseWrapper;
 import io.mosip.resident.constant.ResidentErrorCode;
 import io.mosip.resident.dto.DraftResidentResponseDto;
+import io.mosip.resident.exception.InvalidInputException;
 import io.mosip.resident.exception.ResidentServiceCheckedException;
 import io.mosip.resident.service.ProxyIdRepoService;
 import io.mosip.resident.service.impl.PendingDrafts;
@@ -32,7 +33,9 @@ import java.util.Objects;
 import static io.mosip.resident.constant.ResidentErrorCode.API_RESOURCE_ACCESS_EXCEPTION;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 /**
@@ -51,7 +54,7 @@ public class ProxyIdRepoControllerTest {
 
 	@Mock
 	private ProxyIdRepoService service;
-	
+
 	@Mock
 	private AuditUtil auditUtil;
 
@@ -97,6 +100,15 @@ public class ProxyIdRepoControllerTest {
 		ResponseEntity<ResponseWrapper<DraftResidentResponseDto>> response = controller
 				.getPendingDrafts("eng");
 		assertNotNull(response);
+	}
+
+	@Test
+	public void testGetPendingDraftsInvalidLangCode() throws ResidentServiceCheckedException {
+		doThrow(new InvalidInputException("languageCode"))
+				.when(requestValidator)
+				.validateLanguageCode("invalid");
+
+		assertThrows(InvalidInputException.class, () -> controller.getPendingDrafts("invalid"));
 	}
 
 	@Test

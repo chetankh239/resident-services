@@ -265,7 +265,7 @@ public class ApiExceptionHandler {
 	public ResponseEntity<ResponseWrapper<ServiceError>> onHttpMessageNotReadable(
 			final HttpServletRequest httpServletRequest, final HttpMessageNotReadableException e) throws IOException {
 		ResponseWrapper<ServiceError> errorResponse = setErrors(httpServletRequest);
-		ServiceError error = new ServiceError(ResidentErrorCode.BAD_REQUEST.getErrorCode(), e.getMessage());
+		ServiceError error = new ServiceError(ResidentErrorCode.BAD_REQUEST.getErrorCode(), ResidentErrorCode.BAD_REQUEST.getErrorMessage());
 		errorResponse.getErrors().add(error);
 		return new ResponseEntity<>(errorResponse, HttpStatus.OK);
 	}

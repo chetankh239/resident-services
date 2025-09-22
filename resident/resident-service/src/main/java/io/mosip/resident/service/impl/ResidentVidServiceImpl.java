@@ -806,7 +806,7 @@ public class ResidentVidServiceImpl implements ResidentVidService {
 							+ e.getMessage() + ExceptionUtils.getStackTrace(e));
 			throw new ApisResourceAccessException("Unable to retrieve VID : " + e.getMessage());
 		}
-		logger.info("Response *********************-------------------"+response.getResponse() +"    :::::Response.getResponse() from ResidentVidServiceImpl");
+		logger.info("Response +++*********************-------------------"+response.getResponse() +"    :::::Response.getResponse() from ResidentVidServiceImpl");
 		List<Map<String, ?>> filteredList = ((List<Map<String, ?>>) response.getResponse()).stream()
 				.map(map -> {
 					LinkedHashMap<String, Object> lhm = new LinkedHashMap<String, Object>(map);

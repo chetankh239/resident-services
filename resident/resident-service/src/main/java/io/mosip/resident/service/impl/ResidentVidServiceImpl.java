@@ -799,13 +799,14 @@ public class ResidentVidServiceImpl implements ResidentVidService {
 		try {
 			response = (ResponseWrapper) residentServiceRestClient.getApi(
 					env.getProperty(ApiName.RETRIEVE_VIDS.name()) + uin, ResponseWrapper.class);
+            logger.info("**********************----------"+response + "-----------*****Response from ResidentVidServiceImpl and UIN is : :::::::: -" + uin );
 		} catch (Exception e) {
 			logger.error(LoggerFileConstant.SESSIONID.toString(), LoggerFileConstant.REGISTRATIONID.toString(),
 					uin, ResidentErrorCode.API_RESOURCE_UNAVAILABLE.getErrorCode()
 							+ e.getMessage() + ExceptionUtils.getStackTrace(e));
 			throw new ApisResourceAccessException("Unable to retrieve VID : " + e.getMessage());
 		}
-		
+		logger.info("Response *********************-------------------"+response.getResponse() +"    :::::Response.getResponse() from ResidentVidServiceImpl");
 		List<Map<String, ?>> filteredList = ((List<Map<String, ?>>) response.getResponse()).stream()
 				.map(map -> {
 					LinkedHashMap<String, Object> lhm = new LinkedHashMap<String, Object>(map);

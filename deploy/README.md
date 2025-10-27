@@ -1,10 +1,51 @@
 # Resident Services
 
-## Install
-```sh
-./install.sh
+## Deployment in K8 cluster with other MOSIP services:
+### Pre-requisites
+* Set KUBECONFIG variable to point to existing K8 cluster kubeconfig file:
+    ```
+    export KUBECONFIG=~/.kube/<k8s-cluster.config>
+    ```
+### Install Resident Module
+ ```
+    $ ./install.sh
+   ```
+### Delete
+  ```
+    $ ./delete.sh
+   ```
+### Restart
+  ```
+    $ ./restart.sh
+   ```
+### Install Keycloak client
+  ```
+    cd deploy/keycloak
+    $ ./keycloak_init.sh
+   ```
+
+### Install Apitestrig
 ```
-* During the execution of the `install.sh` script, a prompt appears requesting information regarding the presence of a public domain and a valid SSL certificate on the server.
-* If the server lacks a public domain and a valid SSL certificate, it is advisable to select the `n` option. Opting it will enable the `init-container` with an `emptyDir` volume and include it in the deployment process.
-* The init-container will proceed to download the server's self-signed SSL certificate and mount it to the specified location within the container's Java keystore (i.e., `cacerts`) file.
-* This particular functionality caters to scenarios where the script needs to be employed on a server utilizing self-signed SSL certificates.
+    cd deploy/apitest-masterdata
+    $ ./install.sh
+```
+Note:
+* Script prompts for below mentioned inputs please provide as and when needed:
+  * Enter the time (hr) to run the cronjob every day (0–23): Specify the hour you want the cronjob to run (e.g., 6 for 6 AM)
+  * Do you have a public domain and valid SSL certificate? (Y/n):
+  * Y – If you have a public domain and valid SSL certificate
+  * n – If you do not have one (recommended only for development environments)
+  * Retention days to remove old reports (Default: 3): Press Enter to accept the default or specify another value (e.g., 5).
+  * Provide Slack Webhook URL to notify server issues on your Slack channel: (change the URL to your channel one)
+     ```
+      https://hooks.slack.com/services/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 
+       ```
+  * Is the eSignet service deployed? (yes/no):
+    * no – If eSignet is not deployed, related test cases will be skipped.
+      * Is values.yaml for the apitestrig chart set correctly as part of the prerequisites? (Y/n):
+        * Enter Y if this step is already completed.
+  * Do you have S3 details for storing API-Testrig reports? (Y/n):
+  * Enter Y to proceed with S3 configuration.
+  * S3 Host: eg. `http://minio.minio:9000`
+  * S3 Region:(Leave blank or enter your specific region, if applicable)
+    S3 Access Key:admin
